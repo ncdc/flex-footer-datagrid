@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:local="com.steelpotato.footerDataGrid.*" 
+    width='100%'
+    height='100%'
+    >
+
+<mx:Script>
+<![CDATA[
+
+import mx.collections.ArrayCollection;
+
+[Bindable] private var dp:ArrayCollection = new ArrayCollection([
+	{ symbol: "ADBE", name: "Adobe Systems Inc.",   price: 49.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "BETA", name: "Beta Inc.",            price: 19.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "CSCO", name: "Cisco Inc.",           price: 45.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "DELL", name: "Dell Inc.",            price: 34.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "EXPD", name: "Expedia Inc.",         price: 39.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "FOXS", name: "Fox Sports Inc.",      price: 9.95,    age: Math.round(Math.random()*10000) },
+	{ symbol: "GOOG", name: "Google Inc.",          price: 139.95,  age: Math.round(Math.random()*10000) },
+	{ symbol: "ICON", name: "Icon Inc.",            price: 32.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "JUNI", name: "Juniper Inc.",         price: 23.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "KLA",  name: "KLA Tencor Inc.",      price: 37.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "MACR", name: "Macromedia Inc.",      price: 39.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "MSFT", name: "Microsoft Corp.",      price: 25.95,   age: Math.round(Math.random()*10000) },
+	{ symbol: "IBM",  name: "IBM Corp.",            price: 42.55,   age: Math.round(Math.random()*10000) }
+	]);
+	
+private function onChange():void
+{
+    dp.getItemAt(4).price = 2000;
+    dp.getItemAt(4).name = "BIG Dell Inc.";
+    dp.refresh();
+}
+
+private function onAddSummaries():void
+{
+    var totalFooter:SummaryFooter = new SummaryFooter();
+        totalFooter.label = 'Min';
+        totalFooter.operation = 'min';
+    
+    dg1.footer = dg1.footer.concat(totalFooter);
+}
+                                    
+// column is an object so it can be used with both advanced and normal datagrid columns
+private function total(column:Object):String
+{
+    var total:Number = 0;
+    for each (var row:Object in dp)
+        total += row[column.dataField]
+
+    return Math.round(total).toString();
+}
+
+]]>
+</mx:Script>    
+
+<mx:Label fontSize='24' text='Advanced DataGrid'/>
+                   
+<mx:HBox>         
+<local:AdvancedFooterDataGrid 
+    id='dg2'
+    paddingTop="0" paddingBottom="0" 
+    verticalAlign="middle" 
+    dataProvider='{dp}'
+    >
+    
+    <local:columns>
+        <mx:AdvancedDataGridColumn headerText="Name" dataField="name" width="140"/>
+        <mx:AdvancedDataGridColumn headerText="Symbol" dataField="symbol" width="60"/>
+        <mx:AdvancedDataGridColumn headerText="Price" dataField="price"/>
+        <mx:AdvancedDataGridColumn headerText="Age" dataField="age" itemRenderer='TestDGFooter.AlignRightNumberRenderer'/>
+    </local:columns> 
+    
+    <local:footer>
+        <local:SummaryFooter label='Average' operation='average' precision='2'/>
+        <local:SummaryFooter label='Max' operation='max'/>
+    </local:footer>
+</local:AdvancedFooterDataGrid>       
+<mx:VBox>    
+    <mx:HBox>
+    <mx:Button label='Change a Record' click='onChange()'/>
+    <mx:Button label='Add a Summary Dynamically' click='onAddSummaries()'/>
+    </mx:HBox>
+</mx:VBox>
+</mx:HBox>
+
+<mx:Label fontSize='24' text='Normal DataGrid'/>
+<local:FooterDataGrid 
+    id="dg1" 
+    paddingTop="0" paddingBottom="0" 
+    verticalAlign="middle" 
+    dataProvider='{dp}'   
+    width='100%'         
+    height='100%'     
+    >
+    <local:columns>
+        <mx:DataGridColumn headerText="Name" dataField="name" width="140"/>
+        <mx:DataGridColumn headerText="Symbol" dataField="symbol" width="60"/>
+        <mx:DataGridColumn headerText="Price" dataField="price"/>
+        <mx:DataGridColumn headerText="Age" dataField="age" id='ageColumn' />
+    </local:columns> 
+    
+    <local:footer>
+        <local:SummaryFooter>
+            <local:columns>
+                <local:SummaryColumn label='Total'/>
+                <local:SummaryColumn />
+                <local:SummaryColumn operation='sum' precision='2'/>
+            </local:columns>
+        </local:SummaryFooter>
+        <local:SummaryFooter>
+            <local:columns>
+                <local:SummaryColumn label='Average'/>
+                <local:SummaryColumn />
+                <local:SummaryColumn operation='average' precision='2'/>
+            </local:columns>
+        </local:SummaryFooter>
+        <local:SummaryFooter>
+            <local:columns>
+                <local:SummaryColumn label='Min Age'/>
+                <local:SummaryColumn operation='min' dataColumn='{ageColumn}'/>
+            </local:columns>
+        </local:SummaryFooter> 
+        <local:SummaryFooter>
+            <local:columns>
+                <local:SummaryColumn label='Max Age'/>
+                <local:SummaryColumn operation='max' dataColumn='{ageColumn}'/>
+            </local:columns>
+        </local:SummaryFooter>
+        <local:SummaryFooter>
+            <local:columns>
+                <local:SummaryColumn label='Total Age'/>
+                <local:SummaryColumn labelFunction='total' dataColumn='{ageColumn}'/>
+            </local:columns>
+        </local:SummaryFooter>
+    </local:footer>
+</local:FooterDataGrid>
+    
+
+
+
+
+</mx:VBox>
+
