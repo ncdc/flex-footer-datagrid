@@ -1,3 +1,8 @@
+== Footer DataGrid
+The Footer DataGrid is an extension to Flex's built-in DataGrid class that provides the ability to add one or more footer rows to a DataGrid.
+
+TODO: documentation
+ 
 == License
 
 This code is released under the MIT license, and is copyright (c) 2008 by Sean Clark Hess and Andy Goldstein. Please see the accompanying LICENSE file for the full text of the license.
