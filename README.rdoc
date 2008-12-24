@@ -5,4 +5,4 @@ TODO: documentation
  
 == License
 
-This code is released under the MIT license, and is copyright (c) 2008 by Sean Clark Hess and Andy Goldstein. Please see the accompanying LICENSE file for the full text of the license.
+This code is released under the MIT license, and is copyright (c) 2008 by Sean Clark Hess and Amentra, Inc. Please see the accompanying LICENSE file for the full text of the license.
